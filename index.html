@@ -581,26 +581,6 @@
     and uncomment the audio element below. Free ambient tracks can be found at
     https://freemusicarchive.org or https://pixabay.com/music/
   -->
-<audio id="bg-music" src="music.mp3" loop></audio>
-
-<script>
-const bgMusic = document.getElementById('bg-music');
-
-let started = false;
-
-// Start music on first user interaction (click/tap/keyboard)
-function startMusicOnce() {
-  if (started || !bgMusic) return;
-
-  bgMusic.play().catch(() => {});
-  started = true;
-}
-
-document.addEventListener('click', startMusicOnce, { once: true });
-document.addEventListener('touchstart', startMusicOnce, { once: true });
-document.addEventListener('keydown', startMusicOnce, { once: true });
-</script>
-
 
 
   <!-- ============================================================
@@ -976,5 +956,25 @@ document.addEventListener('keydown', startMusicOnce, { once: true });
       observer.observe(card);
     });
   </script>
+
+<audio id="bg-music" src="music.mp3" loop></audio>
+
+<script>
+const bgMusic = document.getElementById('bg-music');
+
+let started = false;
+
+function startMusicOnce() {
+  if (started || !bgMusic) return;
+
+  bgMusic.play().catch(() => {});
+  started = true;
+}
+
+document.addEventListener('click', startMusicOnce, { once: true });
+document.addEventListener('touchstart', startMusicOnce, { once: true });
+document.addEventListener('keydown', startMusicOnce, { once: true });
+</script>
+
 </body>
 </html>
