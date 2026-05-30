@@ -960,25 +960,37 @@
 <audio id="bg-music" src="music.mp3" loop></audio>
 
 <script>
-const bgMusic = document.getElementById('bg-music');
+const bgMusic = document.getElementById("bg-music");
 
 function startMusic() {
-  if (!bgMusic) return;
+  if (!bgMusic) {
+    console.log("Audio not found");
+    return;
+  }
 
-  bgMusic.play().catch((err) => {
-    console.log("Autoplay blocked:", err);
-  });
+  bgMusic.volume = 0.7;
 
-  // remove listeners after first success
-  document.removeEventListener('click', startMusic);
-  document.removeEventListener('touchstart', startMusic);
-  document.removeEventListener('keydown', startMusic);
+  const playPromise = bgMusic.play();
+
+  if (playPromise !== undefined) {
+    playPromise
+      .then(() => {
+        console.log("Music started");
+      })
+      .catch((err) => {
+        console.log("Play blocked:", err);
+      });
+  }
+
+  // remove listeners after first trigger
+  document.removeEventListener("click", startMusic);
+  document.removeEventListener("touchstart", startMusic);
+  document.removeEventListener("keydown", startMusic);
 }
 
-// IMPORTANT: no { once: true }
-document.addEventListener('click', startMusic);
-document.addEventListener('touchstart', startMusic);
-document.addEventListener('keydown', startMusic);
+document.addEventListener("click", startMusic);
+document.addEventListener("touchstart", startMusic);
+document.addEventListener("keydown", startMusic);
 </script>
 
 </body>
