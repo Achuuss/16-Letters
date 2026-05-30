@@ -959,21 +959,28 @@
 
 <audio id="bg-music" src="music.mp3" loop></audio>
 
+<audio id="bg-music" src="music.mp3" loop></audio>
+
 <script>
 const bgMusic = document.getElementById('bg-music');
 
-let started = false;
+function startMusic() {
+  if (!bgMusic) return;
 
-function startMusicOnce() {
-  if (started || !bgMusic) return;
+  bgMusic.play().catch((err) => {
+    console.log("Autoplay blocked:", err);
+  });
 
-  bgMusic.play().catch(() => {});
-  started = true;
+  // remove listeners after first success
+  document.removeEventListener('click', startMusic);
+  document.removeEventListener('touchstart', startMusic);
+  document.removeEventListener('keydown', startMusic);
 }
 
-document.addEventListener('click', startMusicOnce, { once: true });
-document.addEventListener('touchstart', startMusicOnce, { once: true });
-document.addEventListener('keydown', startMusicOnce, { once: true });
+// IMPORTANT: no { once: true }
+document.addEventListener('click', startMusic);
+document.addEventListener('touchstart', startMusic);
+document.addEventListener('keydown', startMusic);
 </script>
 
 </body>
