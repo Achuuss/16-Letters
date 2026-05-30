@@ -791,30 +791,7 @@
 
     /* ----------------------------------------------------------
        MUSIC TOGGLE
-    ---------------------------------------------------------- */
-    const musicBtn   = document.getElementById('music-btn');
-    const musicLabel = document.getElementById('music-label');
-    const bgMusic    = document.getElementById('bg-music');
-    let musicOn = false;
-
-    musicBtn.addEventListener('click', () => {
-      if (!bgMusic) {
-        // No audio element — show a gentle message
-        musicLabel.textContent = 'Add music.mp3 to enable';
-        setTimeout(() => { musicLabel.textContent = 'Music Off'; }, 2500);
-        return;
-      }
-      musicOn = !musicOn;
-      if (musicOn) {
-        bgMusic.play().catch(() => {});
-        musicLabel.textContent = 'Music On';
-        musicBtn.querySelector('.note').textContent = '♫';
-      } else {
-        bgMusic.pause();
-        musicLabel.textContent = 'Music Off';
-        musicBtn.querySelector('.note').textContent = '♪';
-      }
-    });
+    ---------------------------------------------------------- *
 
     /* ----------------------------------------------------------
        FLOATING LILY PETALS & SPARKLES (Canvas)
@@ -961,28 +938,19 @@
 
 <script>
 const bgMusic = document.getElementById("bg-music");
+let started = false;
 
 function startMusic() {
-  if (!bgMusic) {
-    console.log("Audio not found");
-    return;
-  }
+  if (started || !bgMusic) return;
 
   bgMusic.volume = 0.7;
 
-  const playPromise = bgMusic.play();
+  bgMusic.play().catch((err) => {
+    console.log("Blocked:", err);
+  });
 
-  if (playPromise !== undefined) {
-    playPromise
-      .then(() => {
-        console.log("Music started");
-      })
-      .catch((err) => {
-        console.log("Play blocked:", err);
-      });
-  }
+  started = true;
 
-  // remove listeners after first trigger
   document.removeEventListener("click", startMusic);
   document.removeEventListener("touchstart", startMusic);
   document.removeEventListener("keydown", startMusic);
